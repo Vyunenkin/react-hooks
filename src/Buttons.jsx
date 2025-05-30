@@ -1,12 +1,10 @@
-import { useState, useCallback, useMemo } from 'react';
-import ButtonNoCallback from './ButtonNoCallback.jsx';
-import ButtonWithCallback from './ButtonWithCallback.jsx';
+import { useState, useCallback } from 'react';
+import RegularButton from './RegularButton.jsx';
+import MemoizedButton from './MemoizedButton.jsx';
 
 function Buttons() {
   const [count, setCount] = useState(0);
   const [step, setStep] = useState(1);
-  const incrementLabel = useMemo(() => `+${step}`, [step]);
-  const decrementLabel = useMemo(() => `-${step}`, [step]);  
 
   const increment = useCallback(() => {
     setCount((c) => c + step);
@@ -16,11 +14,11 @@ function Buttons() {
     setCount((c) => c - step);
   }, [step]);
 
-  const incrementNoMemo = () => {
+  const incrementNoCallback = () => {
     setCount((c) => c + step);
   };
 
-  const decrementNoMemo = () => {
+  const decrementNoCallback = () => {
     setCount((c) => c - step);
   };
 
@@ -31,6 +29,8 @@ function Buttons() {
     }
   };
 
+  const labelInc = `+${step}`;
+  const labelDec = `-${step}`;
 
   return (
     <div>
@@ -38,18 +38,26 @@ function Buttons() {
 
       <div style={{ margin: '20px 0' }}>
         <label>
-          Шаг изменения: 
+          Шаг изменения:
           <input type="number" value={step} onChange={handleStepChange} min="1" />
         </label>
       </div>
 
-      <h3>Кнопки без useCallback</h3>
-      <ButtonNoCallback onClick={incrementNoMemo}>{incrementLabel}</ButtonNoCallback>
-      <ButtonNoCallback onClick={decrementNoMemo}>{decrementLabel}</ButtonNoCallback>
+      <h3>1. Обычные кнопки с обычными функциями</h3>
+      <RegularButton onClick={incrementNoCallback} label={labelInc} />
+      <RegularButton onClick={decrementNoCallback} label={labelDec} />
 
-      <h3>Кнопки с useCallback</h3>
-      <ButtonWithCallback onClick={increment}>{incrementLabel}</ButtonWithCallback>
-      <ButtonWithCallback onClick={decrement}>{decrementLabel}</ButtonWithCallback>
+      <h3>2. Обычные кнопки с useCallback</h3>
+      <RegularButton onClick={increment} label={labelInc} />
+      <RegularButton onClick={decrement} label={labelDec} />
+
+      <h3>3. Мемокнопки с обычными функциями</h3>
+      <MemoizedButton onClick={incrementNoCallback} label={labelInc} />
+      <MemoizedButton onClick={decrementNoCallback} label={labelDec} />
+
+      <h3>4. Мемокнопки с useCallback</h3>
+      <MemoizedButton onClick={increment} label={labelInc} />
+      <MemoizedButton onClick={decrement} label={labelDec} />
     </div>
   );
 }

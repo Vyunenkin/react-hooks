@@ -1,11 +1,11 @@
 import {useState, useMemo} from 'react';
 
+function generateRandomArray() {
+  return [...Array(10)].map(() => Math.floor(Math.random() * 100) + 1);
+}
+
 function NumberSum() {
   const [numbers, setNumbers] = useState(generateRandomArray());
-    
-  function generateRandomArray() {
-    return [...Array(10)].map(() => Math.floor(Math.random() * 100) + 1);
-  }
 
   function newArray(){
     setNumbers(generateRandomArray());

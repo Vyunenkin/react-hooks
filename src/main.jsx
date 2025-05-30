@@ -3,10 +3,8 @@ import { createContext, useState, useEffect } from 'react';
 import './index.css';
 import App from './App.jsx';
 
-// Контекст темы
 export const ThemeContext = createContext();
 
-// Провайдер темы
 function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
@@ -26,7 +24,6 @@ function ThemeProvider({ children }) {
   );
 }
 
-// Рендер приложения с провайдером темы
 createRoot(document.getElementById('root')).render(
   <ThemeProvider>
     <App />

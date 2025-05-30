@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 
 function InputFocus() {
   const input = useRef(null);
-  const [inputValue, setInputValue] = useState();
-  const [text, setText] = useState();
+  const [inputValue, setInputValue] = useState('');
+  const [text, setText] = useState('');
 
   function onButtonClickFocus() {
     input.current.focus();

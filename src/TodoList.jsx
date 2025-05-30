@@ -1,4 +1,6 @@
+// TodoList.jsx
 import { useReducer, useState, useMemo, useCallback } from 'react';
+import TodoItem from './TodoItem';
 
 function todoReducer(state, action) {
   switch (action.type) {
@@ -6,7 +8,7 @@ function todoReducer(state, action) {
       return [
         ...state,
         {
-          id: state.length,
+          id: Date.now(),
           text: action.payload,
           completed: false,
         },
@@ -46,7 +48,12 @@ const TodoList = () => {
   const filteredTodos = useMemo(() => {
     return todos.filter(todo => {
       const matchesText = todo.text.toLowerCase().includes(filter.toLowerCase());
-      const matchesStatus = statusFilter === 'all'? true : statusFilter === 'completed' ? todo.completed : !todo.completed;
+      const matchesStatus =
+        statusFilter === 'all'
+          ? true
+          : statusFilter === 'completed'
+          ? todo.completed
+          : !todo.completed;
       return matchesText && matchesStatus;
     });
   }, [todos, filter, statusFilter]);
@@ -56,12 +63,20 @@ const TodoList = () => {
       <h2>Список задач</h2>
 
       <div>
-        <input value={text} onChange={e => setText(e.target.value)} placeholder="Новая задача" />
+        <input
+          value={text}
+          onChange={e => setText(e.target.value)}
+          placeholder="Новая задача"
+        />
         <button onClick={handleAdd}>Добавить задачу</button>
       </div>
 
       <div>
-        <input value={filter} onChange={e => setFilter(e.target.value)} placeholder="Поиск по имени" />
+        <input
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+          placeholder="Поиск по имени"
+        />
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
           <option value="all">Все</option>
           <option value="completed">Выполненные</option>
@@ -71,15 +86,12 @@ const TodoList = () => {
 
       <ul>
         {filteredTodos.map(todo => (
-          <li key={todo.id}>
-            <strong>{todo.text}</strong>
-            {todo.completed ? (
-              <strong> Задача выполнена!</strong>
-            ) : (
-              <button onClick={() => handleToggle(todo.id)}>Выполнить</button>
-            )}
-            <button onClick={() => handleDelete(todo.id)}>Удалить</button>
-          </li>
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggle={handleToggle}
+            onDelete={handleDelete}
+          />
         ))}
       </ul>
     </div>
@@ -87,3 +99,4 @@ const TodoList = () => {
 };
 
 export default TodoList;
+
